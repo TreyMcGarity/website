@@ -320,7 +320,10 @@ function App() {
             <p>
               JavaScript-based simulation of cellular automata with a grid-based UI and start/pause logic. Clean, interactive, and educational.
             </p>
-            <a href="https://github.com/TreyMcGarity/Game_Of_Life" target="_blank" rel="noreferrer">GitHub Repo →</a>
+            <LinkStack>
+            < a href="https://treymcgarity.github.io/Game_Of_Life/" target="_blank" rel="noreferrer">Open Game →</a>
+              <a href="https://github.com/TreyMcGarity/Game_Of_Life" target="_blank" rel="noreferrer">GitHub Repo →</a>
+            </LinkStack>
           </ProjectCard>
         </ProjectsWrapper>
       </Section>
