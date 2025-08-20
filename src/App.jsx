@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useForm, ValidationError } from '@formspree/react';
 
 const Main = styled.main`
   background-color: #0e0e0e;
@@ -125,7 +126,6 @@ const SkillBadge = styled.span`
   font-weight: bold;
 `;
 
-
 /// project section
 
 const ProjectsWrapper = styled.div`
@@ -196,7 +196,6 @@ const LinkStack = styled.div`
   }
 `;
 
-
 /// contact section
 
 const ContactForm = styled.form`
@@ -250,23 +249,17 @@ const SubmitButton = styled.button`
   }
 `;
 
-
-
 function App() {
+  // include email so you can reply + keep your existing subject/message state
+  const [form, setForm] = useState({ subject: '', message: '', email: '' });
 
-  const [form, setForm] = useState({ subject: '', message: '' });
+  // Formspree hook (your form ID)
+  const [state, handleSubmit] = useForm('xvgqjqrk');
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleEmailSubmit = (e) => {
-    e.preventDefault();
-    const mailtoLink = `mailto:treymcgarity99@gmail.com?subject=${encodeURIComponent(
-      form.subject
-    )}&body=${encodeURIComponent(form.message)}`;
-    window.location.href = mailtoLink;
-  };
   return (
     <Main>
       <Nav>
@@ -321,14 +314,14 @@ function App() {
               JavaScript-based simulation of cellular automata with a grid-based UI and start/pause logic. Clean, interactive, and educational.
             </p>
             <LinkStack>
-            < a href="https://treymcgarity.github.io/Game_Of_Life/" target="_blank" rel="noreferrer">Open Game →</a>
+              <a href="https://treymcgarity.github.io/Game_Of_Life/" target="_blank" rel="noreferrer">Open Game →</a>
               <a href="https://github.com/TreyMcGarity/Game_Of_Life" target="_blank" rel="noreferrer">GitHub Repo →</a>
             </LinkStack>
           </ProjectCard>
         </ProjectsWrapper>
       </Section>
 
-            <Section id="skills" dark>
+      <Section id="skills" dark>
         <SectionTitle>Skills & Tools</SectionTitle>
 
         <SkillCategory>
@@ -381,32 +374,67 @@ function App() {
         <p style={{ textAlign: 'center', marginBottom: '2rem' }}>
           Looking for a developer or collaborator? Send me a message!
         </p>
-        <ContactForm onSubmit={handleEmailSubmit}>
-          <label htmlFor="subject">Subject</label>
-          <input
-            type="text"
-            id="subject"
-            name="subject"
-            placeholder="Who are you?"
-            required
-            value={form.subject}
-            onChange={handleChange}
-          />
 
-          <label htmlFor="message">Message</label>
-          <textarea
-            id="message"
-            name="message"
-            placeholder="Write your message here..."
-            required
-            value={form.message}
-            onChange={handleChange}
-          />
+        {/* If Formspree submission succeeded, show a success message */}
+        {state.succeeded ? (
+          <p style={{ textAlign: 'center', color: '#00ffd5', fontWeight: '600' }}>
+            Thanks! Your message was sent. I’ll get back to you soon.
+          </p>
+        ) : (
+          <ContactForm onSubmit={handleSubmit}>
+            <label htmlFor="subject">Subject</label>
+            <input
+              type="text"
+              id="subject"
+              name="subject"
+              placeholder="Quick topic (bug, feature, consultation…)"
+              required
+              value={form.subject}
+              onChange={handleChange}
+            />
 
-          <SubmitButton type="submit">Send Email</SubmitButton>
-        </ContactForm>
+            <label htmlFor="message">Message</label>
+            <textarea
+              id="message"
+              name="message"
+              placeholder="Juicy details..."
+              required
+              value={form.message}
+              onChange={handleChange}
+            />
+            <ValidationError prefix="Message" field="message" errors={state.errors} />
+
+            {/* so you can reply to the sender */}
+            <label htmlFor="email">Your Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="you@example.com"
+              required
+              value={form.email}
+              onChange={handleChange}
+            />
+            <ValidationError prefix="Email" field="email" errors={state.errors} />
+
+            {/* honeypot spam trap (should stay empty) */}
+            <input
+              type="text"
+              name="website"
+              tabIndex="-1"
+              autoComplete="off"
+              style={{ display: 'none' }}
+            />
+
+            {/* optional: force a nice subject in your inbox */}
+            <input type="hidden" name="_subject" value="[Website] New contact message" />
+
+            <SubmitButton type="submit" disabled={state.submitting}>
+              {state.submitting ? 'Sending…' : 'Send Email'}
+            </SubmitButton>
+          </ContactForm>
+        )}
       </Section>
-
 
       <Footer>© 2025 Trey McGarity. Built with React & styled-components.</Footer>
     </Main>
