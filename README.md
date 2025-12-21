@@ -2,7 +2,7 @@
 
 This repository contains my personal portfolio website — a small React app showcasing projects, skills, and contact information.
 
-**Live demo:** Add your deployed site URL here (optional).
+**Live demo:** treymcgarity
 
 **Purpose:** This site is built to present selected work, provide a brief bio, and make it easy for potential employers or collaborators to contact me.
 
@@ -14,7 +14,7 @@ This repository contains my personal portfolio website — a small React app sho
 
 **Tech stack**
 - React
-- CSS (or your chosen styling method)
+- CSS (styled-components)
 - Build with `npm run build`
 
 ## Getting Started
@@ -60,8 +60,4 @@ npm install --save-dev gh-pages
 ## Contributing
 This is a personal portfolio — contributions are optional. If you want to suggest improvements, open an issue or send a patch.
 
-## Contact
-Add your name, email, and links to LinkedIn/GitHub here so visitors can reach you.
-
----
-Updated to be portfolio-focused. Replace placeholders (demo URL, contact info, project details) with your personal content.
+//Moving to a Next.js, for a Personal Developer Platform site creation (stay tuned)
